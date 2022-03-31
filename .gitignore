@@ -1,0 +1,9 @@
+.settings/
+Debug/
+.cproject
+.DS_Store
+.project
+*png
+*aux
+*log
+*gz
