@@ -15,8 +15,8 @@
 int main(int argc, const char * argv[]) {
     
     // Number of grid nodes
-    int ng = 10;
-    int n = 3;
+    int ng = 5;
+    int n = 4;
     
     // Experimental setup parameters
     e_params_t e_params;
@@ -41,16 +41,18 @@ int main(int argc, const char * argv[]) {
     b_data_t_NNNN bulb_data_N;
     bulb_data_N.mol_fracs_bulb1.n = n;
     bulb_data_N.mol_fracs_bulb1.x = new double[n];
-    bulb_data_N.mol_fracs_bulb1.x[0] = 0.501;
-    bulb_data_N.mol_fracs_bulb1.x[1] = 0.499;
-    bulb_data_N.mol_fracs_bulb1.x[2] = 1.0 - 0.501 - 0.499;
+    bulb_data_N.mol_fracs_bulb1.x[0] = 0.201;
+    bulb_data_N.mol_fracs_bulb1.x[1] = 0.0;
+    bulb_data_N.mol_fracs_bulb1.x[2] = 0.15;
+    bulb_data_N.mol_fracs_bulb1.x[3] = 1.0 - 0.201 - 0.15;
     
     // Initial composition bulb 2
     bulb_data_N.mol_fracs_bulb2.n = n;
     bulb_data_N.mol_fracs_bulb2.x = new double[n];
-    bulb_data_N.mol_fracs_bulb2.x[0] = 0.0;
-    bulb_data_N.mol_fracs_bulb2.x[1] = 0.501;
-    bulb_data_N.mol_fracs_bulb2.x[2] = 1.0 - 0.0 - 0.501;
+    bulb_data_N.mol_fracs_bulb2.x[0] = 0.399;
+    bulb_data_N.mol_fracs_bulb2.x[1] = 0.2;
+    bulb_data_N.mol_fracs_bulb2.x[2] = 0.25;
+    bulb_data_N.mol_fracs_bulb2.x[3] = 1.0 - 0.2 - 0.399 - 0.25;
     
     // Total concentration
     p_params_t p_params;
@@ -63,8 +65,8 @@ int main(int argc, const char * argv[]) {
     // Time parameters
     t_params_t t_params;
     t_params.to = 0.0; // Initial time (h)
-    t_params.tf = 2.0; // Final time (h)
-    t_params.nt = 1; // Number of time steps.
+    t_params.tf = 10.0; // Final time (h)
+    t_params.nt = 10; // Number of time steps.
     t_params.dt = (t_params.tf - t_params.to) / t_params.nt; // Time sampling
     
     // Diffusivities
@@ -81,13 +83,26 @@ int main(int argc, const char * argv[]) {
         }
     }
     
-    p_params_N.D[0][1] = 8.33e-5 * 3600; // units (m2 / h)
-    p_params_N.D[0][2] = 6.8e-5 * 3600; // units (m2 / h)
-    p_params_N.D[1][2] = 1.68e-5 * 3600; // units (m2 / h)
-
-    p_params_N.D[1][0] = 8.33e-5 * 3600; // units (m2 / h)
-    p_params_N.D[2][0] = 6.8e-5 * 3600; // units (m2 / h)
-    p_params_N.D[2][1] = 1.68e-5 * 3600; // units (m2 / h)
+    double D12 = 8.33e-5 * 3600; // units are (m2 / h)
+    double D13 = 6.8e-5 * 3600; // units are (m2 / h)
+    double D14 = 3.8e-5 * 3600; // units are (m2 / h)
+    double D23 = 1.68e-5 * 3600; // units are (m2 / h)
+    double D24 = 4.68e-5 * 3600; // units are (m2 / h)
+    double D34 = 5.68e-5 * 3600; // units are (m2 / h)
+    
+    p_params_N.D[0][1] = D12; // units (m2 / h)
+    p_params_N.D[0][2] = D13; // units (m2 / h)
+    p_params_N.D[0][3] = D14; // units (m2 / h)
+    p_params_N.D[1][2] = D23; // units (m2 / h)
+    p_params_N.D[1][3] = D24; // units (m2 / h)
+    p_params_N.D[2][3] = D34; // units (m2 / h)
+    
+    p_params_N.D[1][0] = D12; // units (m2 / h)
+    p_params_N.D[2][0] = D13; // units (m2 / h)
+    p_params_N.D[3][0] = D14; // units (m2 / h)
+    p_params_N.D[2][1] = D23; // units (m2 / h)
+    p_params_N.D[3][1] = D24; // units (m2 / h)
+    p_params_N.D[3][2] = D34; // units (m2 / h)
     
     p_params_N.D12 = 8.33e-5 * 3600; // units (m2 / h)
     p_params_N.D13 = 6.8e-5 * 3600; // units (m2 / h)
@@ -100,6 +115,7 @@ int main(int argc, const char * argv[]) {
     compute_bulb_compositions_NNNN(e_params, p_params_N, p_params, t_params, ng, n, bulb_data_N, bulb_data);
 
     // Print results
+    std::cout << "ref data: " << std::endl;
     std::cout << "bulb 1 frac 1: " << bulb_data.mol_fracs_bulb1.x1 << std::endl;
     std::cout << "bulb 1 frac 2: " << bulb_data.mol_fracs_bulb1.x2 << std::endl;
     std::cout << "bulb 1 frac 3: " << bulb_data.mol_fracs_bulb1.x3 << std::endl;
@@ -110,14 +126,18 @@ int main(int argc, const char * argv[]) {
     
     
     // Print results
+    std::cout << "calc data: " << std::endl;
     std::cout << "bulb 1 frac 1: " << bulb_data_N.mol_fracs_bulb1.x[0] << std::endl;
     std::cout << "bulb 1 frac 2: " << bulb_data_N.mol_fracs_bulb1.x[1] << std::endl;
     std::cout << "bulb 1 frac 3: " << bulb_data_N.mol_fracs_bulb1.x[2] << std::endl;
+    std::cout << "bulb 1 frac 4: " << bulb_data_N.mol_fracs_bulb1.x[3] << std::endl;
     
     std::cout << "bulb 2 frac 1: " << bulb_data_N.mol_fracs_bulb2.x[0] << std::endl;
     std::cout << "bulb 2 frac 2: " << bulb_data_N.mol_fracs_bulb2.x[1] << std::endl;
     std::cout << "bulb 2 frac 3: " << bulb_data_N.mol_fracs_bulb2.x[2] << std::endl;
-//    testing();
+    std::cout << "bulb 2 frac 4: " << bulb_data_N.mol_fracs_bulb2.x[3] << std::endl;
     
+//    testing();
+//    
     return 0;
 }

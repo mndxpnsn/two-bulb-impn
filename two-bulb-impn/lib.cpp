@@ -159,6 +159,10 @@ void bulb1_c1(c_data_t & comp_data) {
 
     double beta1_loc = beta1(comp_data.p_params, x1, x2);
     double beta2_loc = beta2(comp_data.p_params, x1, x2);
+    
+    // Store coefficients
+    comp_data.coeff_mat_boundary[0].A_inv[0][0] = beta1_loc;
+    comp_data.coeff_mat_boundary[0].A_inv[0][1] = beta2_loc;
 
     double ap1 = V * comp_data.p_params.ct / dt - 2 * beta1_loc * A / dz;
 
@@ -172,6 +176,9 @@ void bulb1_c1(c_data_t & comp_data) {
     x1_b1 = x1_b1 / ap1;
 
     comp_data.bulb_data.mol_fracs_bulb1.x1 = x1_b1;
+    
+//    std::cout << "A_inv_b1 ref:" << std::endl;
+//    std::cout << beta1_loc << ", " << beta2_loc << std::endl;
 }
 
 void bulb1_c2(c_data_t & comp_data) {
@@ -187,6 +194,10 @@ void bulb1_c2(c_data_t & comp_data) {
     double alpha1_loc = alpha1(comp_data.p_params, x1, x2);
     double alpha2_loc = alpha2(comp_data.p_params, x1, x2);
 
+    // Store coefficients
+    comp_data.coeff_mat_boundary[0].A_inv[1][0] = alpha1_loc;
+    comp_data.coeff_mat_boundary[0].A_inv[1][1] = alpha2_loc;
+    
     double ap2 = V * comp_data.p_params.ct / dt - 2 * alpha2_loc * A / dz;
 
     double x11 = comp_data.tube_fracs[0].x1;
@@ -200,6 +211,8 @@ void bulb1_c2(c_data_t & comp_data) {
 
     comp_data.bulb_data.mol_fracs_bulb1.x2 = x2_b1;
     comp_data.bulb_data.mol_fracs_bulb1.x3 = 1.0 - comp_data.bulb_data.mol_fracs_bulb1.x1 - x2_b1;
+    
+//    std::cout << alpha1_loc << ", " << alpha2_loc << std::endl;
 }
 
 void bulb2_c1(c_data_t & comp_data) {
@@ -216,6 +229,10 @@ void bulb2_c1(c_data_t & comp_data) {
     double beta1_loc = beta1(comp_data.p_params, x1, x2);
     double beta2_loc = beta2(comp_data.p_params, x1, x2);
 
+    // Store coefficients
+    comp_data.coeff_mat_boundary[ng].A_inv[0][0] = beta1_loc;
+    comp_data.coeff_mat_boundary[ng].A_inv[0][1] = beta2_loc;
+    
     double ap1 = V * comp_data.p_params.ct / dt - 2 * beta1_loc * A / dz;
 
     double x1n = comp_data.tube_fracs[ng - 1].x1;
@@ -228,6 +245,9 @@ void bulb2_c1(c_data_t & comp_data) {
     x1_b2 = x1_b2 / ap1;
 
     comp_data.bulb_data.mol_fracs_bulb2.x1 = x1_b2;
+    
+//    std::cout << "A_inv_b2 ref:" << std::endl;
+//    std::cout << beta1_loc << ", " << beta2_loc << std::endl;
 }
 
 void bulb2_c2(c_data_t & comp_data) {
@@ -244,6 +264,10 @@ void bulb2_c2(c_data_t & comp_data) {
     double alpha1_loc = alpha1(comp_data.p_params, x1, x2);
     double alpha2_loc = alpha2(comp_data.p_params, x1, x2);
 
+    // Store coefficients
+    comp_data.coeff_mat_boundary[ng].A_inv[1][0] = alpha1_loc;
+    comp_data.coeff_mat_boundary[ng].A_inv[1][1] = alpha2_loc;
+    
     double ap2 = V * comp_data.p_params.ct / dt - 2 * alpha2_loc * A / dz;
 
     double x1n = comp_data.tube_fracs[ng - 1].x1;
@@ -257,6 +281,8 @@ void bulb2_c2(c_data_t & comp_data) {
 
     comp_data.bulb_data.mol_fracs_bulb2.x2 = x2_b2;
     comp_data.bulb_data.mol_fracs_bulb2.x3 = 1.0 - comp_data.bulb_data.mol_fracs_bulb2.x1 - x2_b2;
+    
+//    std::cout << alpha1_loc << ", " << alpha2_loc << std::endl;
 }
 
 void tube0_c1(c_data_t & comp_data) {
@@ -277,6 +303,12 @@ void tube0_c1(c_data_t & comp_data) {
     double beta2w = beta2(comp_data.p_params, x1w, x2w);
     double beta1e = beta1(comp_data.p_params, x1e, x2e);
     double beta2e = beta2(comp_data.p_params, x1e, x2e);
+    
+    // Store coefficients
+    comp_data.coeff_mat_boundary[0].A_inv[0][0] = beta1w;
+    comp_data.coeff_mat_boundary[0].A_inv[0][1] = beta2w;
+    comp_data.coeff_mat_boundary[1].A_inv[0][0] = beta1e;
+    comp_data.coeff_mat_boundary[1].A_inv[0][1] = beta2e;
     
     double ap1_tube0 = comp_data.p_params.ct * dz / dt - beta1w / (0.5 * dz) - beta1e / dz;
     
@@ -307,6 +339,12 @@ void tube0_c2(c_data_t & comp_data) {
     double alpha2w = alpha2(comp_data.p_params, x1w, x2w);
     double alpha1e = alpha1(comp_data.p_params, x1e, x2e);
     double alpha2e = alpha2(comp_data.p_params, x1e, x2e);
+    
+    // Store coefficients
+    comp_data.coeff_mat_boundary[0].A_inv[1][0] = alpha1w;
+    comp_data.coeff_mat_boundary[0].A_inv[1][1] = alpha2w;
+    comp_data.coeff_mat_boundary[1].A_inv[1][0] = alpha1e;
+    comp_data.coeff_mat_boundary[1].A_inv[1][1] = alpha2e;
     
     double ap2_tube0 = comp_data.p_params.ct * dz / dt - alpha2w / (0.5 * dz) - alpha2e / dz;
     
@@ -343,6 +381,12 @@ void mid_nodes1(c_data_t & comp_data) {
         double beta1e = beta1(comp_data.p_params, x1e, x2e);
         double beta2e = beta2(comp_data.p_params, x1e, x2e);
 
+        // Store coefficients
+        comp_data.coeff_mat_boundary[node].A_inv[0][0] = beta1w;
+        comp_data.coeff_mat_boundary[node].A_inv[0][1] = beta2w;
+        comp_data.coeff_mat_boundary[node + 1].A_inv[0][0] = beta1e;
+        comp_data.coeff_mat_boundary[node + 1].A_inv[0][1] = beta2e;
+        
         double ap1_tube_node = comp_data.p_params.ct * dz / dt - beta1w / dz - beta1e / dz;
         
         double old_term_tube1 = comp_data.p_params.ct * dz / dt * comp_data.tube_fracs_old[node].x1;
@@ -378,6 +422,12 @@ void mid_nodes2(c_data_t & comp_data)  {
         double alpha1e = alpha1(comp_data.p_params, x1e, x2e);
         double alpha2e = alpha2(comp_data.p_params, x1e, x2e);
 
+        // Store coefficients
+        comp_data.coeff_mat_boundary[node].A_inv[1][0] = alpha1w;
+        comp_data.coeff_mat_boundary[node].A_inv[1][1] = alpha2w;
+        comp_data.coeff_mat_boundary[node + 1].A_inv[1][0] = alpha1e;
+        comp_data.coeff_mat_boundary[node + 1].A_inv[1][1] = alpha2e;
+        
         double ap2_tube_node = comp_data.p_params.ct * dz / dt - alpha2w / dz - alpha2e / dz;
         
         double old_term_tube2 = comp_data.p_params.ct * dz / dt * comp_data.tube_fracs_old[node].x2;
@@ -412,6 +462,12 @@ void tube_n_c1(c_data_t & comp_data) {
     double beta1e = beta1(comp_data.p_params, x1e, x2e);
     double beta2e = beta2(comp_data.p_params, x1e, x2e);
     
+    // Store coefficients
+    comp_data.coeff_mat_boundary[ng - 1].A_inv[0][0] = beta1w;
+    comp_data.coeff_mat_boundary[ng - 1].A_inv[0][1] = beta2w;
+    comp_data.coeff_mat_boundary[ng].A_inv[0][0] = beta1e;
+    comp_data.coeff_mat_boundary[ng].A_inv[0][1] = beta2e;
+    
     double ap1_tube_n = comp_data.p_params.ct * dz / dt - beta1w / dz - beta1e / (0.5 * dz);
     
     double old_term_tube_n_1 = comp_data.p_params.ct * dz / dt * comp_data.tube_fracs_old[ng - 1].x1;
@@ -444,6 +500,12 @@ void tube_n_c2(c_data_t & comp_data)  {
     double alpha2w = alpha2(comp_data.p_params, x1w, x2w);
     double alpha1e = alpha1(comp_data.p_params, x1e, x2e);
     double alpha2e = alpha2(comp_data.p_params, x1e, x2e);
+    
+    // Store coefficients
+    comp_data.coeff_mat_boundary[ng - 1].A_inv[1][0] = alpha1w;
+    comp_data.coeff_mat_boundary[ng - 1].A_inv[1][1] = alpha2w;
+    comp_data.coeff_mat_boundary[ng].A_inv[1][0] = alpha1e;
+    comp_data.coeff_mat_boundary[ng].A_inv[1][1] = alpha2e;
     
     double ap2_tube_n = comp_data.p_params.ct * dz / dt - alpha2w / dz - alpha2e / (0.5 * dz);
     
@@ -603,13 +665,13 @@ void compute_bulb_compositions(e_params_t e_params,
             }
             
             // Print current tube composition
-            std::cout << "ref 3 comps" << std::endl;
-            for(int node = 0; node < ng; ++node) {
-                printf("%f, ", comp_data.tube_fracs[node].x1);
-                printf("%f, ", comp_data.tube_fracs[node].x2);
-                printf("%f, ", comp_data.tube_fracs[node].x3);
-                printf("\n");
-            }
+//            std::cout << "ref 3 comps" << std::endl;
+//            for(int node = 0; node < ng; ++node) {
+//                printf("%f, ", comp_data.tube_fracs[node].x1);
+//                printf("%f, ", comp_data.tube_fracs[node].x2);
+//                printf("%f, ", comp_data.tube_fracs[node].x3);
+//                printf("\n");
+//            }
             
             out_it++;
         }
@@ -850,8 +912,8 @@ void compute_coefficients(c_data_t_NNNN & comp_data) {
         double * x_loc = new double [n + 1];
         double sum_l_c = 0.0;
         for(int c = 0; c < n; ++c) {
-            double w_term = comp_data.tube_fracs_inter[flux_node - 1].x[c];
-            double e_term = comp_data.tube_fracs_inter[flux_node].x[c];
+            double w_term = comp_data.tube_fracs[flux_node - 1].x[c];
+            double e_term = comp_data.tube_fracs[flux_node].x[c];
             x_loc[c] = 0.5 * (w_term + e_term);
             sum_l_c = sum_l_c + x_loc[c];
         }
@@ -863,6 +925,13 @@ void compute_coefficients(c_data_t_NNNN & comp_data) {
     
     // Bulb 2
     compute_coeff_matrix(ng, comp_data, comp_data.bulb_data_inter.mol_fracs_bulb2.x);
+    
+    
+//    std::cout << "ANALYZE THERE" << std::endl;
+//    for(int node_l = 0; node_l < ng + 1; node_l++) {
+//        std::cout << "A_inv node " << node_l << std::endl;
+//        print_mat(comp_data.coeff_mat_boundary[node_l].A_inv, n);
+//    }
 }
 
 void reset_coefficients(c_data_t_NNNN & comp_data) {
@@ -880,20 +949,20 @@ void reset_coefficients(c_data_t_NNNN & comp_data) {
     }
 }
 
-void bulb1_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
+void bulb1_NNNN(c_data_t_NNNN & comp_data_N, c_data_t & comp_data_ref) {
 
     int flux_node = 0;
-    int n = comp_data.n - 1;
-    double V = comp_data.e_params.V;
-    double A = comp_data.e_params.A;
-    double dz = comp_data.e_params.dz;
-    double dt = comp_data.t_params.dt;
+    int n = comp_data_N.n - 1;
+    double V = comp_data_N.e_params.V;
+    double A = comp_data_N.e_params.A;
+    double dz = comp_data_N.e_params.dz;
+    double dt = comp_data_N.t_params.dt;
     
-    double ** A_inv = comp_data.coeff_mat_boundary[flux_node].A_inv;
-//    double ** A_ = comp_data.coeff_mat_boundary[flux_node].A;
+    double ** A_inv = comp_data_N.coeff_mat_boundary[flux_node].A_inv;
+//    double ** A_ = comp_data_N.coeff_mat_boundary[flux_node].A;
 //    double ** prod = mat2D(n);
     
-//    // Check mat
+    // Check mat
 //    printf("A\n");
 //    print_mat(A_, n);
 //    printf("A_inv\n");
@@ -906,263 +975,214 @@ void bulb1_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
         double sum_loc = 0.0;
         for(int c = 0; c < n; ++c) {
             if(c != i) {
-                double dxj = comp_data.tube_fracs[0].x[c] - comp_data.bulb_data.mol_fracs_bulb1.x[c];
+                double dxj = comp_data_N.tube_fracs[0].x[c] - comp_data_N.bulb_data.mol_fracs_bulb1.x[c];
                 double dxj_dz = dxj / (0.5 * dz);
                 sum_loc = sum_loc + A * A_inv[i][c] * dxj_dz;
             }
         }
-        
-        sum_loc = sum_loc + A * A_inv[i][i] * comp_data.tube_fracs[0].x[i] / (0.5 * dz);
-        sum_loc = sum_loc + V / dt * comp_data.bulb_data_old.mol_fracs_bulb1.x[i];
+
+        sum_loc = sum_loc + A * A_inv[i][i] * comp_data_N.tube_fracs[0].x[i] / (0.5 * dz);
+        sum_loc = sum_loc + V / dt * comp_data_N.bulb_data_old.mol_fracs_bulb1.x[i];
         double ap = V / dt + A * A_inv[i][i] / (0.5 * dz);
-        
-        comp_data.bulb_data.mol_fracs_bulb1.x[i] = sum_loc / ap;
+
+        comp_data_N.bulb_data.mol_fracs_bulb1.x[i] = sum_loc / ap;
     }
     
-//    double numer = A * A_inv[1][1] * comp_data.tube_fracs[0].x[1] / (0.5 * dz);
-//    numer = numer + V / dt * comp_data.bulb_data_old.mol_fracs_bulb1.x[1];
-//    double x1 = comp_data.tube_fracs[0].x[0];
-//    double x1p = comp_data.bulb_data.mol_fracs_bulb1.x[0];
-//    numer = numer + A * A_inv[1][0] * (x1 - x1p) / (0.5 * dz);
-//    double ap2 = V / dt + A * A_inv[1][1] / (0.5 * dz);
-//
-//    comp_data.bulb_data.mol_fracs_bulb1.x[1] = numer / ap2;
+    // Set last frac values
+    double sum_3 = 0.0;
+    for(int c = 0; c < n; ++c) {
+        sum_3 = sum_3 + comp_data_N.bulb_data.mol_fracs_bulb1.x[c];
+    }
+    
+    comp_data_N.bulb_data.mol_fracs_bulb1.x[n] = 1.0 - sum_3;
+    
+    // Set ref values for testing
+
+    bulb1_c1(comp_data_ref);
+
+    bulb1_c2(comp_data_ref);
+    
+//    comp_data_N.bulb_data.mol_fracs_bulb1.x[0] = comp_data_ref.bulb_data.mol_fracs_bulb1.x1;
+//    comp_data_N.bulb_data.mol_fracs_bulb1.x[1] = comp_data_ref.bulb_data.mol_fracs_bulb1.x2;
+    
 }
 
-void bulb2_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
-    int ng = comp_data.ng;
+void bulb2_NNNN(c_data_t_NNNN & comp_data_N, c_data_t & comp_data) {
+    int ng = comp_data_N.ng;
     
     int flux_node = ng;
-    int n = comp_data.n - 1;
-    double V = comp_data.e_params.V;
-    double A = comp_data.e_params.A;
-    double dz = comp_data.e_params.dz;
-    double dt = comp_data.t_params.dt;
+    int n = comp_data_N.n - 1;
+    double V = comp_data_N.e_params.V;
+    double A = comp_data_N.e_params.A;
+    double dz = comp_data_N.e_params.dz;
+    double dt = comp_data_N.t_params.dt;
     
-    double ** A_inv = comp_data.coeff_mat_boundary[flux_node].A_inv;
+    double ** A_inv = comp_data_N.coeff_mat_boundary[flux_node].A_inv;
     
     for(int i = 0; i < n; ++i) {
         double sum_loc = 0.0;
         for(int j = 0; j < n; ++j) {
             if(i != j) {
-                double dxj_dz = (comp_data.bulb_data.mol_fracs_bulb2.x[j] - comp_data.tube_fracs[ng - 1].x[j]) / (0.5 * dz);
+                double dxj_dz = (comp_data_N.bulb_data.mol_fracs_bulb2.x[j] - comp_data_N.tube_fracs[ng - 1].x[j]) / (0.5 * dz);
                 sum_loc = sum_loc + A_inv[i][j] * dxj_dz;
             }
         }
-        sum_loc = - A * sum_loc + A * A_inv[i][i] * comp_data.tube_fracs[ng - 1].x[i] / (0.5 * dz) + V / dt * comp_data.bulb_data_old.mol_fracs_bulb2.x[i];
-        
-        comp_data.bulb_data.mol_fracs_bulb2.x[i] = sum_loc / (V / dt + A * A_inv[i][i] / (0.5 * dz));
+        sum_loc = - A * sum_loc + A * A_inv[i][i] * comp_data_N.tube_fracs[ng - 1].x[i] / (0.5 * dz) + V / dt * comp_data_N.bulb_data_old.mol_fracs_bulb2.x[i];
+
+        comp_data_N.bulb_data.mol_fracs_bulb2.x[i] = sum_loc / (V / dt + A * A_inv[i][i] / (0.5 * dz));
     }
     
+    // Testing code below
+    bulb2_c1(comp_data);
+    
+    bulb2_c2(comp_data);
+    
+//    comp_data_N.bulb_data.mol_fracs_bulb1.x[0] = comp_data.bulb_data.mol_fracs_bulb1.x1;
+//    comp_data_N.bulb_data.mol_fracs_bulb1.x[1] = comp_data.bulb_data.mol_fracs_bulb1.x2;
 }
 
-void tube0_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
+void tube0_NNNN(c_data_t_NNNN & comp_data_N, c_data_t & comp_data) {
     int flux_node_w = 0;
     int flux_node_e = 1;
-    int n = comp_data.n - 1;
-    double dz = comp_data.e_params.dz;
-    double dt = comp_data.t_params.dt;
+    int n = comp_data_N.n - 1;
+    double dz = comp_data_N.e_params.dz;
+    double dt = comp_data_N.t_params.dt;
     
-    double ** A_inv_w = comp_data.coeff_mat_boundary[flux_node_w].A_inv;
-    double ** A_inv_e = comp_data.coeff_mat_boundary[flux_node_e].A_inv;
-    double ** A_w = comp_data.coeff_mat_boundary[flux_node_w].A;
-    double ** A_e = comp_data.coeff_mat_boundary[flux_node_e].A;
+    double ** A_inv_w = comp_data_N.coeff_mat_boundary[flux_node_w].A_inv;
+    double ** A_inv_e = comp_data_N.coeff_mat_boundary[flux_node_e].A_inv;
     
-    std::cout << "tube0 A_w" << std::endl;
-    print_mat(A_w, n);
-    std::cout << "tube0 A_e" << std::endl;
-    print_mat(A_e, n);
-    std::cout << "tube0 A_inv_w" << std::endl;
-    print_mat(A_inv_w, n);
-    std::cout << "tube0 A_inv_e" << std::endl;
-    print_mat(A_inv_e, n);
+//    std::cout << "A_inv_w:" << std::endl;
+//    print_mat(A_inv_w, n);
+//
+//    std::cout << "A_inv_e:" << std::endl;
+//    print_mat(A_inv_e, n);
     
     for(int i = 0; i < n; ++i) {
         double sum_loc_w = 0.0;
         double sum_loc_e = 0.0;
         for(int j = 0; j < n; ++j) {
             if(i != j) {
-                double dxj_dz_w = (comp_data.tube_fracs[0].x[j] - comp_data.bulb_data_inter.mol_fracs_bulb1.x[j]) / (0.5 * dz);
+                double dxj_dz_w = (comp_data_N.tube_fracs[0].x[j] - comp_data_N.bulb_data_inter.mol_fracs_bulb1.x[j]) / (0.5 * dz);
                 sum_loc_w = sum_loc_w + A_inv_w[i][j] * dxj_dz_w;
 
-                double dxj_dz_e = (comp_data.tube_fracs[1].x[j] - comp_data.tube_fracs[0].x[j]) / dz;
+                double dxj_dz_e = (comp_data_N.tube_fracs[1].x[j] - comp_data_N.tube_fracs[0].x[j]) / dz;
                 sum_loc_e = sum_loc_e + A_inv_e[i][j] * dxj_dz_e;
             }
         }
 
-        double sum_loc_tot = sum_loc_w - sum_loc_e - A_inv_w[i][i] * comp_data.bulb_data_inter.mol_fracs_bulb1.x[i] / (0.5 * dz) - A_inv_e[i][i] * comp_data.tube_fracs[1].x[0] / dz + dz / dt * comp_data.tube_fracs_old[0].x[i];
+        double sum_loc_tot = - sum_loc_w + sum_loc_e + A_inv_w[i][i] * comp_data_N.bulb_data_inter.mol_fracs_bulb1.x[i] / (0.5 * dz) + A_inv_e[i][i] * comp_data_N.tube_fracs[1].x[i] / dz + dz / dt * comp_data_N.tube_fracs_old[0].x[i];
 
-        double ap = dz / dt - A_inv_w[i][i] / (0.5 * dz) - A_inv_e[i][i] / dz;
+        double ap = dz / dt + A_inv_w[i][i] / (0.5 * dz) + A_inv_e[i][i] / dz;
 
-        comp_data.tube_fracs[0].x[i] = sum_loc_tot / ap;
-        
-//        double beta1w = A_inv_w[0][0];
-//        double beta2w = A_inv_w[0][1];
-//        double beta1e = A_inv_e[0][0];
-//        double beta2e = A_inv_e[0][1];
-//
-//        double xiW = comp_data.bulb_data_inter.mol_fracs_bulb1.x[0];
-//        double xiE = comp_data.tube_fracs[1].x[0];
-//        double x2P = comp_data.tube_fracs[0].x[1];
-//        double x2E = comp_data.tube_fracs[1].x[1];
-//        double x2W = comp_data.bulb_data_inter.mol_fracs_bulb1.x[1];
-//
-////        double dxj_dz_w = (x2P - x2W) / (0.5 * dz);
-////
-////        double dxj_dz_e = (x2E - x2P) / dz;
-//
-//        double numer = - beta1w / (0.5 * dz) * xiW + beta2w / (0.5 * dz) * (x2P - x2W) - beta1e / dz * xiE - beta2e / dz * (x2E - x2P) + dz / dt * comp_data.tube_fracs_old[0].x[0];
-//
-//        double ap_loc = dz / dt - beta1w / (0.5 * dz) - beta1e / dz;
-//
-//        comp_data.tube_fracs[0].x[0] = numer / ap_loc;
+        comp_data_N.tube_fracs[0].x[i] = sum_loc_tot / ap;
     }
+        
+    // Testing code below
+    tube0_c1(comp_data);
     
-    // Reset component 1
-
-    double x1W = comp_data.bulb_data_inter.mol_fracs_bulb1.x[0];
-    double x2W = comp_data.bulb_data_inter.mol_fracs_bulb1.x[1];
-
-//    double x2P = comp_data.tube_fracs[0].x[1];
-    double x1E = comp_data.tube_fracs[1].x[0];
-    double x2E = comp_data.tube_fracs[1].x[1];
-
-//    double beta1w = A_inv_w[0][0];
-//    double beta2w = A_inv_w[0][1];
-//    double beta1e = A_inv_e[0][0];
-//    double beta2e = A_inv_e[0][1];
-//
-//    double ap1_tube0 = dz / dt - beta1w / (0.5 * dz) - beta1e / dz;
-//
-//    double old_term_tube1 = comp_data.p_params.ct * dz * comp_data.tube_fracs_old[0].x[0] / dt;
-//
-//    double x1_tube0 = - beta1w / (0.5 * dz) * x1W + beta2w / (0.5 * dz) * (x2P - x2W) - beta1e / dz * x1E - beta2e / dz * (x2E - x2P) + old_term_tube1;
-//
-//    x1_tube0 = x1_tube0 / ap1_tube0;
-
-//    comp_data.tube_fracs[0].x[0] = x1_tube0;
-
-    // Reset component 2
-
-    x1W = comp_data.bulb_data_inter.mol_fracs_bulb1.x[0];
-    x2W = comp_data.bulb_data_inter.mol_fracs_bulb1.x[1];
-
-    x1E = comp_data.tube_fracs[1].x[0];
-    x2E = comp_data.tube_fracs[1].x[1];
-    double x1P = comp_data.tube_fracs[0].x[0];
-
-    double alpha1w = A_inv_w[1][0];
-    double alpha2w = A_inv_w[1][1];
-    double alpha1e = A_inv_e[1][0];
-    double alpha2e = A_inv_e[1][1];
-
-
-//    std::cout << "mat w" << std::endl;
+    tube0_c2(comp_data);
+    
+//    comp_data_N.tube_fracs[0].x[0] = comp_data.tube_fracs[0].x1;
+//    comp_data_N.tube_fracs[0].x[1] = comp_data.tube_fracs[0].x2;
+    
+//    std::cout << "A_inv_w ref:" << std::endl;
 //    std::cout << beta1w << ", " << beta2w << std::endl;
 //    std::cout << alpha1w << ", " << alpha2w << std::endl;
 //
-//    std::cout << "mat e" << std::endl;
+//    std::cout << "A_inv_e ref:" << std::endl;
 //    std::cout << beta1e << ", " << beta2e << std::endl;
 //    std::cout << alpha1e << ", " << alpha2e << std::endl;
-
-    double ap2_tube0 = comp_data.p_params.ct * dz / dt - alpha2w / (0.5 * dz) - alpha2e / dz;
-
-    double old_term_tube2 = comp_data.p_params.ct * dz * comp_data.tube_fracs_old[0].x[1] / dt;
-
-    double x2_tube0 = alpha1w / (0.5 * dz) * (x1P - x1W) - alpha2w / (0.5 * dz) * x2W - alpha1e / dz * (x1E - x1P) - alpha2e / dz * x2E + old_term_tube2;
-
-    x2_tube0 = x2_tube0 / ap2_tube0;
-
-//    comp_data.tube_fracs[0].x[1] = x2_tube0;
-//    comp_data.tube_fracs[0].x[2] = 1.0 - comp_data.tube_fracs[0].x[0] - comp_data.tube_fracs[0].x[1];
 }
 
-void tube_mid_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
+void tube_mid_NNNN(c_data_t_NNNN & comp_data_N, c_data_t & comp_data) {
     
-    int ng = comp_data.ng;
+    int ng = comp_data_N.ng;
     
     for(int node = 1; node < ng - 1; ++node) {
         int flux_node_w = node;
         int flux_node_e = node + 1;
-        int n = comp_data.n - 1;
-        double dz = comp_data.e_params.dz;
-        double dt = comp_data.t_params.dt;
-        
-        double * x_loc_w = new double [n + 1];
-        for(int c = 0; c < n + 1; ++c) {
-            double w_term = comp_data.tube_fracs_inter[node - 1].x[c];
-            double e_term = comp_data.tube_fracs_inter[node].x[c];
-            x_loc_w[c] = 0.5 * (w_term + e_term);
-        }
-        
-        double * x_loc_e = new double [n + 1];
-        for(int c = 0; c < n + 1; ++c) {
-            double w_term = comp_data.tube_fracs_inter[node].x[c];
-            double e_term = comp_data.tube_fracs_inter[node + 1].x[c];
-            x_loc_e[c] = 0.5 * (w_term + e_term);
-        }
-        
-        double ** A_inv_w = comp_data.coeff_mat_boundary[flux_node_w].A_inv;
-        double ** A_inv_e = comp_data.coeff_mat_boundary[flux_node_e].A_inv;
-        
+        int n = comp_data_N.n - 1;
+        double dz = comp_data_N.e_params.dz;
+        double dt = comp_data_N.t_params.dt;
+
+        double ** A_inv_w = comp_data_N.coeff_mat_boundary[flux_node_w].A_inv;
+        double ** A_inv_e = comp_data_N.coeff_mat_boundary[flux_node_e].A_inv;
+
         for(int i = 0; i < n; ++i) {
             double sum_loc_w = 0.0;
             double sum_loc_e = 0.0;
             for(int j = 0; j < n; ++j) {
                 if(i != j) {
-                    double dxj_dz_w = (comp_data.tube_fracs[node].x[j] - comp_data.tube_fracs[node - 1].x[j]) / dz;
+                    double dxj_dz_w = (comp_data_N.tube_fracs[node].x[j] - comp_data_N.tube_fracs[node - 1].x[j]) / dz;
                     sum_loc_w = sum_loc_w + A_inv_w[i][j] * dxj_dz_w;
-                    
-                    double dxj_dz_e = (comp_data.tube_fracs[node + 1].x[j] - comp_data.tube_fracs[node].x[j]) / dz;
+
+                    double dxj_dz_e = (comp_data_N.tube_fracs[node + 1].x[j] - comp_data_N.tube_fracs[node].x[j]) / dz;
                     sum_loc_e = sum_loc_e + A_inv_e[i][j] * dxj_dz_e;
                 }
             }
-            double xiW = comp_data.tube_fracs[node - 1].x[i];
-            double xiE = comp_data.tube_fracs[node + 1].x[i];
-            double sum_loc_tot = -sum_loc_w + sum_loc_e + A_inv_w[i][i] / dz * xiW + A_inv_e[i][i] / dz * xiE + dz / dt * comp_data.tube_fracs_old[node].x[i];
-            
-            comp_data.tube_fracs[node].x[i] = sum_loc_tot / (dz / dt + A_inv_w[i][i] / dz + A_inv_e[i][i] / dz);
+            double xiW = comp_data_N.tube_fracs[node - 1].x[i];
+            double xiE = comp_data_N.tube_fracs[node + 1].x[i];
+            double sum_loc_tot = -sum_loc_w + sum_loc_e + A_inv_w[i][i] / dz * xiW + A_inv_e[i][i] / dz * xiE + dz / dt * comp_data_N.tube_fracs_old[node].x[i];
+
+            comp_data_N.tube_fracs[node].x[i] = sum_loc_tot / (dz / dt + A_inv_w[i][i] / dz + A_inv_e[i][i] / dz);
         }
+        
+//        comp_data_N.tube_fracs[node].x[0] = comp_data.tube_fracs[node].x1;
+//        comp_data_N.tube_fracs[node].x[1] = comp_data.tube_fracs[node].x2;
     }
+    
+    // Testing code
+    mid_nodes1(comp_data);
+    
+    mid_nodes2(comp_data);
 }
 
-void tube_n_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
+void tube_n_NNNN(c_data_t_NNNN & comp_data_N, c_data_t & comp_data) {
     int ng = comp_data.ng;
     
-    int flux_node_w = ng - 1;;
+    int flux_node_w = ng - 1;
     int flux_node_e = ng;
-    int n = comp_data.n - 1;
-    double dz = comp_data.e_params.dz;
-    double dt = comp_data.t_params.dt;
+    int n = comp_data_N.n - 1;
+    double dz = comp_data_N.e_params.dz;
+    double dt = comp_data_N.t_params.dt;
     
-    double * x_loc_w = new double [n + 1];
-    for(int c = 0; c < n + 1; ++c) {
-        double w_term = comp_data.tube_fracs_inter[ng - 2].x[c];
-        double e_term = comp_data.tube_fracs_inter[ng - 1].x[c];
-        x_loc_w[c] = 0.5 * (w_term + e_term);
-    }
+//    double * x_loc_w = new double [n + 1];
+//    for(int c = 0; c < n + 1; ++c) {
+//        double w_term = comp_data_N.tube_fracs_inter[ng - 2].x[c];
+//        double e_term = comp_data_N.tube_fracs_inter[ng - 1].x[c];
+//        x_loc_w[c] = 0.5 * (w_term + e_term);
+//    }
     
-    double ** A_inv_w = comp_data.coeff_mat_boundary[flux_node_w].A_inv;
-    double ** A_inv_e = comp_data.coeff_mat_boundary[flux_node_e].A_inv;
+    double ** A_inv_w = comp_data_N.coeff_mat_boundary[flux_node_w].A_inv;
+    double ** A_inv_e = comp_data_N.coeff_mat_boundary[flux_node_e].A_inv;
     
     for(int i = 0; i < n; ++i) {
         double sum_loc_w = 0.0;
         double sum_loc_e = 0.0;
         for(int j = 0; j < n; ++j) {
             if(i != j) {
-                double dxj_dz_w = (comp_data.tube_fracs[ng - 1].x[j] - comp_data.tube_fracs[ng - 2].x[j]) / dz;
+                double dxj_dz_w = (comp_data_N.tube_fracs[ng - 1].x[j] - comp_data_N.tube_fracs[ng - 2].x[j]) / dz;
                 sum_loc_w = sum_loc_w + A_inv_w[i][j] * dxj_dz_w;
-                
-                double dxj_dz_e = (comp_data.bulb_data.mol_fracs_bulb2.x[j] - comp_data.tube_fracs[ng - 1].x[j]) / (0.5 * dz);
+
+                double dxj_dz_e = (comp_data_N.bulb_data.mol_fracs_bulb2.x[j] - comp_data_N.tube_fracs[ng - 1].x[j]) / (0.5 * dz);
                 sum_loc_e = sum_loc_e + A_inv_e[i][j] * dxj_dz_e;
             }
         }
-        double xiW = comp_data.tube_fracs[ng - 2].x[i];
-        double xiE = comp_data.bulb_data.mol_fracs_bulb2.x[i];
-        double sum_loc_tot = -sum_loc_w + sum_loc_e + A_inv_w[i][i] / dz * xiW + A_inv_e[i][i] / (0.5 * dz) * xiE + dz / dt * comp_data.tube_fracs_old[ng - 1].x[i];
-        
-        comp_data.tube_fracs[ng - 1].x[i] = sum_loc_tot / (dz / dt + A_inv_w[i][i] / dz + A_inv_e[i][i] / (0.5 * dz));
+        double xiW = comp_data_N.tube_fracs[ng - 2].x[i];
+        double xiE = comp_data_N.bulb_data.mol_fracs_bulb2.x[i];
+        double sum_loc_tot = -sum_loc_w + sum_loc_e + A_inv_w[i][i] / dz * xiW + A_inv_e[i][i] / (0.5 * dz) * xiE + dz / dt * comp_data_N.tube_fracs_old[ng - 1].x[i];
+
+        comp_data_N.tube_fracs[ng - 1].x[i] = sum_loc_tot / (dz / dt + A_inv_w[i][i] / dz + A_inv_e[i][i] / (0.5 * dz));
     }
+    
+    
+    // Testing
+    tube_n_c1(comp_data);
+    
+    tube_n_c2(comp_data);
+    
+//    comp_data_N.tube_fracs[ng - 1].x[0] = comp_data.tube_fracs[ng - 1].x1;
+//    comp_data_N.tube_fracs[ng - 1].x[1] = comp_data.tube_fracs[ng - 1].x2;
 }
 
 void update_composition_estimate_NNNN(c_data_t_NNNN & comp_data, c_data_t & comp_data_ref) {
@@ -1252,7 +1272,7 @@ void compute_bulb_compositions_NNNN(e_params_t e_params,
         }
     }
     
-    // Organize data
+    // Organize reference data
     c_data_t comp_data_ref;
     comp_data_ref.ng = ng;
 
@@ -1282,6 +1302,22 @@ void compute_bulb_compositions_NNNN(e_params_t e_params,
         comp_data_ref.tube_fracs_old[node].x1 = 1.0 / 3;
         comp_data_ref.tube_fracs_old[node].x2 = 1.0 / 3;
         comp_data_ref.tube_fracs_old[node].x3 = 1.0 / 3;
+    }
+    
+    
+    // Allocate space for and initialize coefficient matrix
+    comp_data_ref.coeff_mat_boundary = new c_mat_b_t[ng + 1];
+    for(int flux_node = 0; flux_node < ng + 1; ++flux_node) {
+        comp_data_ref.coeff_mat_boundary[flux_node].A = new double * [n];
+        comp_data_ref.coeff_mat_boundary[flux_node].A_inv = new double * [n];
+        for(int c = 0; c < n; ++c) {
+            comp_data_ref.coeff_mat_boundary[flux_node].A[c] = new double[n];
+            comp_data_ref.coeff_mat_boundary[flux_node].A_inv[c] = new double[n];
+            for(int c_l = 0; c_l < n; ++c_l) {
+                comp_data_ref.coeff_mat_boundary[flux_node].A[c][c_l] = 0.0;
+                comp_data_ref.coeff_mat_boundary[flux_node].A_inv[c][c_l] = 0.0;
+            }
+        }
     }
     
     // Compute composition
@@ -1348,34 +1384,59 @@ void compute_bulb_compositions_NNNN(e_params_t e_params,
        
                 // Update estimates bulb and tube composition
                 update_composition_estimate_NNNN(comp_data, comp_data_ref);
-        
-                update_composition_estimate(comp_data_ref);
+                
+//                // Print coefficient matrices
+//                std::cout << "ANALYZE HERE" << std::endl;
+//                for(int node_l = 0; node_l < ng + 1; node_l++) {
+//                    std::cout << "A_inv node " << node_l << std::endl;
+//                    print_mat(comp_data.coeff_mat_boundary[node_l].A_inv, n - 1);
+//                    std::cout << "A_inv_ref node " << node_l << std::endl;
+//                    print_mat(comp_data_ref.coeff_mat_boundary[node_l].A_inv, n - 1);
+//                }
                 
                 in_it++;
             }
             
-            // Print current tube composition
-            std::cout << "tube fracs comps" << std::endl;
-            for(int node = 0; node < ng; ++node) {
-                for(int c = 0; c < n; ++c) {
-                    printf("%f, ", comp_data.tube_fracs[node].x[c]);
-                }
-                printf("\n");
-            }
-            
-            // Print current ref tube composition
-            std::cout << "ref 3 comps" << std::endl;
-            for(int node = 0; node < ng; ++node) {
-                printf("%f, ", comp_data_ref.tube_fracs[node].x1);
-                printf("%f, ", comp_data_ref.tube_fracs[node].x2);
-                printf("%f, ", comp_data_ref.tube_fracs[node].x3);
-                printf("\n");
-            }
+//            // Print current tube composition
+//            std::cout << "tube fracs comps" << std::endl;
+//            for(int node = 0; node < ng; ++node) {
+//                for(int c = 0; c < n; ++c) {
+//                    printf("%f, ", comp_data.tube_fracs[node].x[c]);
+//                }
+//                printf("\n");
+//            }
+//
+//            // Print current ref tube composition
+//            std::cout << "ref 3 comps" << std::endl;
+//            for(int node = 0; node < ng; ++node) {
+//                printf("%f, ", comp_data_ref.tube_fracs[node].x1);
+//                printf("%f, ", comp_data_ref.tube_fracs[node].x2);
+//                printf("%f, ", comp_data_ref.tube_fracs[node].x3);
+//                printf("\n");
+//            }
             
             out_it++;
         }
         
         t = t + dt;
+    }
+    
+    // Print current tube composition
+    std::cout << "tube fracs comps" << std::endl;
+    for(int node = 0; node < ng; ++node) {
+        for(int c = 0; c < n; ++c) {
+            printf("%f, ", comp_data.tube_fracs[node].x[c]);
+        }
+        printf("\n");
+    }
+
+    // Print current ref tube composition
+    std::cout << "ref 3 comps" << std::endl;
+    for(int node = 0; node < ng; ++node) {
+        printf("%f, ", comp_data_ref.tube_fracs[node].x1);
+        printf("%f, ", comp_data_ref.tube_fracs[node].x2);
+        printf("%f, ", comp_data_ref.tube_fracs[node].x3);
+        printf("\n");
     }
     
     // Set bulb data

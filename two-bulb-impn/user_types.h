@@ -8,8 +8,8 @@
 #ifndef user_types_h
 #define user_types_h
 
-const int MAX_OUT = 1;
-const int MAX_IN = 1;
+const int MAX_OUT = 100;
+const int MAX_IN = 100;
 
 typedef struct node_data {
     double x1;
@@ -72,6 +72,8 @@ typedef struct experiment_params {
 typedef struct computation_data {
     int ng;
 
+    c_mat_b_t * coeff_mat_boundary;
+    
     p_params_t p_params;
     e_params_t e_params;
     t_params_t t_params;
