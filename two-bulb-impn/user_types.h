@@ -12,15 +12,9 @@ const int MAX_OUT = 100;
 const int MAX_IN = 100;
 
 typedef struct node_data {
-    double x1;
-    double x2;
-    double x3;
-} node_t;
-
-typedef struct node_data_NNNN {
     double * x;
     int n;
-} node_t_NNNN;
+} node_t;
 
 typedef struct coeff_mat_boundary {
     double ** A;
@@ -30,29 +24,17 @@ typedef struct coeff_mat_boundary {
 
 typedef struct physical_params {
     double ct;
-    double D12;
-    double D13;
-    double D23;
-} p_params_t;
-
-typedef struct physical_params_NNNN {
-    double ct;
     double ** D;
     int n;
     double D12;
     double D13;
     double D23;
-} p_params_t_NNNN;
+} p_params_t;
 
 typedef struct bulb_data {
     node_t mol_fracs_bulb1;
     node_t mol_fracs_bulb2;
 } b_data_t;
-
-typedef struct bulb_data_NNNN {
-    node_t_NNNN mol_fracs_bulb1;
-    node_t_NNNN mol_fracs_bulb2;
-} b_data_t_NNNN;
 
 typedef struct time_parameters {
     double to;
@@ -71,6 +53,7 @@ typedef struct experiment_params {
 
 typedef struct computation_data {
     int ng;
+    int n;
 
     c_mat_b_t * coeff_mat_boundary;
     
@@ -86,24 +69,5 @@ typedef struct computation_data {
     node_t * tube_fracs_old;
     node_t * tube_fracs_inter;
 } c_data_t;
-
-typedef struct computation_data_NNNN {
-    int ng;
-    int n;
-
-    c_mat_b_t * coeff_mat_boundary;
-    
-    p_params_t_NNNN p_params;
-    e_params_t e_params;
-    t_params_t t_params;
-
-    b_data_t_NNNN bulb_data_inter;
-    b_data_t_NNNN bulb_data_old;
-    b_data_t_NNNN bulb_data;
-
-    node_t_NNNN * tube_fracs;
-    node_t_NNNN * tube_fracs_old;
-    node_t_NNNN * tube_fracs_inter;
-} c_data_t_NNNN;
 
 #endif /* user_types_h */
