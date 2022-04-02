@@ -3,8 +3,9 @@
 //  two-bulb-imp
 //
 //  Created by dwh on 12/03/2022.
-//  Three-component two-bulb diffusion
-//  using implicit time discretization
+//  n-component two-bulb diffusion
+//  using the finite volume method
+//  with implicit time discretization.
 //
 
 #include <iostream>
@@ -54,15 +55,16 @@ int main(int argc, const char * argv[]) {
     t_params.nt = 10; // Number of time steps.
     t_params.dt = (t_params.tf - t_params.to) / t_params.nt; // Time sampling
 
-    // Initialize and set diffusivities
-    init_diffusivities(p_params, n);
-    
+    // Diffusivities
     double D12 = 8.33e-5 * 3600; // units are (m2 / h)
     double D13 = 6.8e-5 * 3600; // units are (m2 / h)
     double D14 = 3.8e-5 * 3600; // units are (m2 / h)
     double D23 = 1.68e-5 * 3600; // units are (m2 / h)
     double D24 = 4.68e-5 * 3600; // units are (m2 / h)
     double D34 = 5.68e-5 * 3600; // units are (m2 / h)
+    
+    // Initialize and set diffusivities
+    init_diffusivities(p_params, n);
     
     p_params.D[0][1] = D12; // units (m2 / h)
     p_params.D[0][2] = D13; // units (m2 / h)
