@@ -21,9 +21,9 @@ int main(int argc, const char * argv[]) {
     
     // Experimental setup parameters
     e_params_t e_params;
-    e_params.V = 5e-4; // Volume of compartments (m3)
-    e_params.d = 2e-3; // Diameter of tube connecting compartments (m)
-    e_params.len = 1e-2; // Length of tube connecting compartments (m)
+    e_params.V = 5e-4; // Volume of bulbs (m3)
+    e_params.d = 2e-3; // Diameter of tube connecting bulbs (m)
+    e_params.len = 1e-2; // Length of tube connecting bulbs (m)
     e_params.A = 0.25 * 3.14 * e_params.d * e_params.d; // Cross-section area of tube (m2)
     e_params.dz = e_params.len / ng; // Tube resolution (m)
 
