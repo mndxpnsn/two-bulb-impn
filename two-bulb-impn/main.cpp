@@ -99,5 +99,8 @@ int main(int argc, const char * argv[]) {
     // Free allocated data
     free_mat2D(p_params.D, n);
     
+    delete [] bulb_data.mol_fracs_bulb1.x;
+    delete [] bulb_data.mol_fracs_bulb2.x;
+    
     return 0;
 }
