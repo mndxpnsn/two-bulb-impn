@@ -28,31 +28,31 @@ int main(int argc, const char * argv[]) {
     
     // Initial composition bulb 1
     b_data_t bulb_data;
-    bulb_data.mol_fracs_bulb1.x1 = 0.501; // Bulb 1 H2 fraction
-    bulb_data.mol_fracs_bulb1.x2 = 0.499; // Bulb 1 N2 fraction
-    bulb_data.mol_fracs_bulb1.x3 = 1.0 - 0.501 - 0.499; // Bulb 1 CO2 fraction
+    bulb_data.mol_fracs_bulb1.x1 = 0.0;//0.501; // Bulb 1 H2 fraction
+    bulb_data.mol_fracs_bulb1.x2 = 0.501;//0.499; // Bulb 1 N2 fraction
+    bulb_data.mol_fracs_bulb1.x3 = 1.0 - 0.501 - 0.0; // Bulb 1 CO2 fraction
     
     // Initial composition bulb 2
-    bulb_data.mol_fracs_bulb2.x1 = 0.0; // Bulb 2 H2 fraction
-    bulb_data.mol_fracs_bulb2.x2 = 0.501; // Bulb 2 N2 fraction
-    bulb_data.mol_fracs_bulb2.x3 = 1.0 - 0.0 - 0.501; // Bulb 2 CO2 fraction
+    bulb_data.mol_fracs_bulb2.x1 = 0.501;//0.0; // Bulb 2 H2 fraction
+    bulb_data.mol_fracs_bulb2.x2 = 0.499; // Bulb 2 N2 fraction
+    bulb_data.mol_fracs_bulb2.x3 = 1.0 - 0.499 - 0.501; // Bulb 2 CO2 fraction
     
     // Initial composition bulb 1
     b_data_t_NNNN bulb_data_N;
     bulb_data_N.mol_fracs_bulb1.n = n;
     bulb_data_N.mol_fracs_bulb1.x = new double[n];
-    bulb_data_N.mol_fracs_bulb1.x[0] = 0.201;
-    bulb_data_N.mol_fracs_bulb1.x[1] = 0.0;
-    bulb_data_N.mol_fracs_bulb1.x[2] = 0.15;
-    bulb_data_N.mol_fracs_bulb1.x[3] = 1.0 - 0.201 - 0.15;
+    bulb_data_N.mol_fracs_bulb1.x[0] = 0.399;//0.201;
+    bulb_data_N.mol_fracs_bulb1.x[1] = 0.2;//0.0;
+    bulb_data_N.mol_fracs_bulb1.x[2] = 0.25;//0.15;
+    bulb_data_N.mol_fracs_bulb1.x[3] = 1.0 - 0.399 - 0.2 - 0.25;
     
     // Initial composition bulb 2
     bulb_data_N.mol_fracs_bulb2.n = n;
     bulb_data_N.mol_fracs_bulb2.x = new double[n];
-    bulb_data_N.mol_fracs_bulb2.x[0] = 0.399;
-    bulb_data_N.mol_fracs_bulb2.x[1] = 0.2;
-    bulb_data_N.mol_fracs_bulb2.x[2] = 0.25;
-    bulb_data_N.mol_fracs_bulb2.x[3] = 1.0 - 0.2 - 0.399 - 0.25;
+    bulb_data_N.mol_fracs_bulb2.x[0] = 0.201;//0.399;
+    bulb_data_N.mol_fracs_bulb2.x[1] = 0.0;//0.2;
+    bulb_data_N.mol_fracs_bulb2.x[2] = 0.15;//0.25;
+    bulb_data_N.mol_fracs_bulb2.x[3] = 1.0 - 0.201 - 0.15;
     
     // Total concentration
     p_params_t p_params;
