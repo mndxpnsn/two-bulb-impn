@@ -54,14 +54,8 @@ int main(int argc, const char * argv[]) {
     t_params.nt = 10; // Number of time steps.
     t_params.dt = (t_params.tf - t_params.to) / t_params.nt; // Time sampling
 
-    // Diffusivities
-    p_params.D = new double * [n];
-    for(int j = 0; j < n; ++j) {
-        p_params.D[j] = new double[n];
-        for(int c = 0; c < n; ++c) {
-            p_params.D[j][c] = 0.0;
-        }
-    }
+    // Initialize and set tiffusivities
+    init_diffusivities(p_params, n);
     
     double D12 = 8.33e-5 * 3600; // units are (m2 / h)
     double D13 = 6.8e-5 * 3600; // units are (m2 / h)
@@ -99,7 +93,5 @@ int main(int argc, const char * argv[]) {
     std::cout << "bulb 2 frac 3: " << bulb_data.mol_fracs_bulb2.x[2] << std::endl;
     std::cout << "bulb 2 frac 4: " << bulb_data.mol_fracs_bulb2.x[3] << std::endl;
     
-//    testing();
-//    
     return 0;
 }

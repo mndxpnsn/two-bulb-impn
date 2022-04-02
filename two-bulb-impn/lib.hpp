@@ -12,7 +12,7 @@
 
 #include "user_types.h"
 
-void testing();
+void init_diffusivities(p_params_t & p_params, int n);
 
 void compute_bulb_compositions(e_params_t e_params,
                                 p_params_t p_params,

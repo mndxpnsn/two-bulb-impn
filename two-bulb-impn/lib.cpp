@@ -13,6 +13,17 @@
 #include "lib.hpp"
 #include "user_types.h"
 
+
+void init_diffusivities(p_params_t & p_params, int n) {
+    p_params.D = new double * [n];
+    for(int j = 0; j < n; ++j) {
+        p_params.D[j] = new double[n];
+        for(int c = 0; c < n; ++c) {
+            p_params.D[j][c] = 0.0;
+        }
+    }
+}
+
 void set_frac_comp3(c_data_t & comp_data) {
     int ng = comp_data.ng;
     int n = comp_data.n;
@@ -614,33 +625,3 @@ void compute_bulb_compositions(e_params_t e_params,
     delete [] comp_data.tube_fracs_old;
 }
 
-void testing() {
-    
-    int n = 5;
-    
-    double ** mat = new double * [n];
-    double ** mat_inv = new double * [n];
-    double ** prod = new double * [n];
-    
-    for(int i = 0; i < n; ++i) {
-        mat[i] = new double[n];
-        mat_inv[i] = new double[n];
-        prod[i] = new double[n];
-    }
-    
-    srand((unsigned) time(NULL));
-    for(int i = 0; i < n; ++i) {
-        for(int j = 0; j < n; ++j) {
-            mat[i][j] = (double) rand() / RAND_MAX * 100;
-        }
-    }
-    
-    compute_mat_inv(mat, n, mat_inv);
-    
-    mat_prod(mat, mat_inv, n, prod);
-    
-    print_mat(mat, n);
-    
-    print_mat(prod, n);
-    
-}
