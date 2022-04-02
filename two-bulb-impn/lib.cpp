@@ -15,9 +15,9 @@
 
 
 void init_diffusivities(p_params_t & p_params, int n) {
-    p_params.D = new double * [n];
+    p_params.D = mat2D(n);
+    
     for(int j = 0; j < n; ++j) {
-        p_params.D[j] = new double[n];
         for(int c = 0; c < n; ++c) {
             p_params.D[j][c] = 0.0;
         }
@@ -527,11 +527,9 @@ void compute_bulb_compositions(e_params_t e_params,
     
     // Allocate space for and initialize coefficient matrix
     for(int flux_node = 0; flux_node < ng + 1; ++flux_node) {
-        comp_data.coeff_mat_boundary[flux_node].A = new double * [n];
-        comp_data.coeff_mat_boundary[flux_node].A_inv = new double * [n];
+        comp_data.coeff_mat_boundary[flux_node].A = mat2D(n);
+        comp_data.coeff_mat_boundary[flux_node].A_inv = mat2D(n);
         for(int c = 0; c < n; ++c) {
-            comp_data.coeff_mat_boundary[flux_node].A[c] = new double[n];
-            comp_data.coeff_mat_boundary[flux_node].A_inv[c] = new double[n];
             for(int c_l = 0; c_l < n; ++c_l) {
                 comp_data.coeff_mat_boundary[flux_node].A[c][c_l] = 0.0;
                 comp_data.coeff_mat_boundary[flux_node].A_inv[c][c_l] = 0.0;
@@ -612,7 +610,25 @@ void compute_bulb_compositions(e_params_t e_params,
     }
     
     // Set bulb data
-    bulb_data = comp_data.bulb_data;
+    for(int c = 0; c < n; ++c) {
+        bulb_data.mol_fracs_bulb1.x[c] = comp_data.bulb_data.mol_fracs_bulb1.x[c];
+        bulb_data.mol_fracs_bulb2.x[c] = comp_data.bulb_data.mol_fracs_bulb2.x[c];
+    }
+    
+    // Free allocated space
+    delete [] comp_data.bulb_data.mol_fracs_bulb1.x;
+    delete [] comp_data.bulb_data.mol_fracs_bulb2.x;
+    delete [] comp_data.bulb_data_old.mol_fracs_bulb1.x;
+    delete [] comp_data.bulb_data_old.mol_fracs_bulb2.x;
+    delete [] comp_data.bulb_data_inter.mol_fracs_bulb1.x;
+    delete [] comp_data.bulb_data_inter.mol_fracs_bulb2.x;
+    
+    for(int flux_node = 0; flux_node < ng + 1; ++flux_node) {
+        free_mat2D(comp_data.coeff_mat_boundary[flux_node].A, n);
+        free_mat2D(comp_data.coeff_mat_boundary[flux_node].A_inv, n);
+    }
+    
+    delete [] comp_data.coeff_mat_boundary;
     
     for(int node = 0; node < ng; ++node) {
         delete [] comp_data.tube_fracs[node].x;

@@ -12,6 +12,10 @@
 
 #include "user_types.h"
 
+double ** mat2D(int n);
+
+void free_mat2D(double ** mat, int n);
+
 void init_diffusivities(p_params_t & p_params, int n);
 
 void compute_bulb_compositions(e_params_t e_params,

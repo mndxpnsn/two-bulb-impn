@@ -30,18 +30,18 @@ int main(int argc, const char * argv[]) {
     b_data_t bulb_data;
     bulb_data.mol_fracs_bulb1.n = n;
     bulb_data.mol_fracs_bulb1.x = new double[n];
-    bulb_data.mol_fracs_bulb1.x[0] = 0.399;//0.201;
-    bulb_data.mol_fracs_bulb1.x[1] = 0.2;//0.0;
-    bulb_data.mol_fracs_bulb1.x[2] = 0.25;//0.15;
-    bulb_data.mol_fracs_bulb1.x[3] = 1.0 - 0.399 - 0.2 - 0.25;
+    bulb_data.mol_fracs_bulb1.x[0] = 0.399;//0.201; // H2
+    bulb_data.mol_fracs_bulb1.x[1] = 0.2;//0.0; // N2
+    bulb_data.mol_fracs_bulb1.x[2] = 0.25;//0.15; // Ne
+    bulb_data.mol_fracs_bulb1.x[3] = 1.0 - 0.399 - 0.2 - 0.25; // CO2
     
     // Initial composition bulb 2
     bulb_data.mol_fracs_bulb2.n = n;
     bulb_data.mol_fracs_bulb2.x = new double[n];
-    bulb_data.mol_fracs_bulb2.x[0] = 0.201;//0.399;
-    bulb_data.mol_fracs_bulb2.x[1] = 0.0;//0.2;
-    bulb_data.mol_fracs_bulb2.x[2] = 0.15;//0.25;
-    bulb_data.mol_fracs_bulb2.x[3] = 1.0 - 0.201 - 0.15;
+    bulb_data.mol_fracs_bulb2.x[0] = 0.201;//0.399; // H2
+    bulb_data.mol_fracs_bulb2.x[1] = 0.0;//0.2; // N2
+    bulb_data.mol_fracs_bulb2.x[2] = 0.15;//0.25; // Ne
+    bulb_data.mol_fracs_bulb2.x[3] = 1.0 - 0.201 - 0.0 - 0.15; // CO2
     
     // Total concentration
     p_params_t p_params;
@@ -54,7 +54,7 @@ int main(int argc, const char * argv[]) {
     t_params.nt = 10; // Number of time steps.
     t_params.dt = (t_params.tf - t_params.to) / t_params.nt; // Time sampling
 
-    // Initialize and set tiffusivities
+    // Initialize and set diffusivities
     init_diffusivities(p_params, n);
     
     double D12 = 8.33e-5 * 3600; // units are (m2 / h)
@@ -82,16 +82,20 @@ int main(int argc, const char * argv[]) {
     compute_bulb_compositions(e_params, p_params, t_params, ng, n, bulb_data);
     
     // Print results
-    std::cout << "calc data: " << std::endl;
+    std::cout << "bulb 1 data: " << std::endl;
     std::cout << "bulb 1 frac 1: " << bulb_data.mol_fracs_bulb1.x[0] << std::endl;
     std::cout << "bulb 1 frac 2: " << bulb_data.mol_fracs_bulb1.x[1] << std::endl;
     std::cout << "bulb 1 frac 3: " << bulb_data.mol_fracs_bulb1.x[2] << std::endl;
     std::cout << "bulb 1 frac 4: " << bulb_data.mol_fracs_bulb1.x[3] << std::endl;
     
+    std::cout << "bulb 2 data: " << std::endl;
     std::cout << "bulb 2 frac 1: " << bulb_data.mol_fracs_bulb2.x[0] << std::endl;
     std::cout << "bulb 2 frac 2: " << bulb_data.mol_fracs_bulb2.x[1] << std::endl;
     std::cout << "bulb 2 frac 3: " << bulb_data.mol_fracs_bulb2.x[2] << std::endl;
     std::cout << "bulb 2 frac 4: " << bulb_data.mol_fracs_bulb2.x[3] << std::endl;
+    
+    // Free allocated data
+    free_mat2D(p_params.D, n);
     
     return 0;
 }
