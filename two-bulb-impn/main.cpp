@@ -30,18 +30,18 @@ int main(int argc, const char * argv[]) {
     b_data_t bulb_data;
     bulb_data.mol_fracs_bulb1.n = n;
     bulb_data.mol_fracs_bulb1.x = new double[n];
-    bulb_data.mol_fracs_bulb1.x[0] = 0.399;//0.201; // H2
-    bulb_data.mol_fracs_bulb1.x[1] = 0.2;//0.0; // N2
-    bulb_data.mol_fracs_bulb1.x[2] = 0.25;//0.15; // Ne
-    bulb_data.mol_fracs_bulb1.x[3] = 1.0 - 0.399 - 0.2 - 0.25; // CO2
+    bulb_data.mol_fracs_bulb1.x[0] = 0.201; // H2
+    bulb_data.mol_fracs_bulb1.x[1] = 0.0; // N2
+    bulb_data.mol_fracs_bulb1.x[2] = 0.15; // Ne
+    bulb_data.mol_fracs_bulb1.x[3] = 1.0 - 0.201 - 0.15; // CO2
     
     // Initial composition bulb 2
     bulb_data.mol_fracs_bulb2.n = n;
     bulb_data.mol_fracs_bulb2.x = new double[n];
-    bulb_data.mol_fracs_bulb2.x[0] = 0.201;//0.399; // H2
-    bulb_data.mol_fracs_bulb2.x[1] = 0.0;//0.2; // N2
-    bulb_data.mol_fracs_bulb2.x[2] = 0.15;//0.25; // Ne
-    bulb_data.mol_fracs_bulb2.x[3] = 1.0 - 0.201 - 0.0 - 0.15; // CO2
+    bulb_data.mol_fracs_bulb2.x[0] = 0.399; // H2
+    bulb_data.mol_fracs_bulb2.x[1] = 0.2; // N2
+    bulb_data.mol_fracs_bulb2.x[2] = 0.25; // Ne
+    bulb_data.mol_fracs_bulb2.x[3] = 1.0 - 0.399 - 0.2 - 0.25; // CO2
     
     // Total concentration
     p_params_t p_params;
