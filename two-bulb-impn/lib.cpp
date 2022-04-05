@@ -50,7 +50,7 @@ void set_frac_comp3(c_data_t & comp_data) {
     comp_data.bulb_data.mol_fracs_bulb2.x[n - 1] = 1.0 - sum_loc2;
 }
 
-double Determinant(double ** a, int n) {
+double determinant(double ** a, int n) {
    int i, j, j1, j2;
    double det = 0;
    double **m = NULL;
@@ -86,7 +86,7 @@ double Determinant(double ** a, int n) {
                }
            }
 
-           det += pow(-1.0, j1 + 2.0) * a[0][j1] * Determinant(m, n - 1);
+           det += pow(-1.0, j1 + 2.0) * a[0][j1] * determinant(m, n - 1);
 
            for (i = 0; i < n - 1; i++)
                delete [] m[i];
@@ -99,9 +99,7 @@ double Determinant(double ** a, int n) {
 
 }
 
-
-// Find the cofactor matrix of a square matrix
-void CoFactor(double ** a, int n, double ** b)
+void co_factor(double ** a, int n, double ** b)
 {
     
     int i, j, ii, jj, i1, j1;
@@ -135,7 +133,7 @@ void CoFactor(double ** a, int n, double ** b)
             }
 
             // Calculate the determinate
-            det = Determinant(c, n - 1);
+            det = determinant(c, n - 1);
 
             // Fill in the elements of the cofactor
             b[i][j] = pow(-1.0, i + j + 2.0) * det;
@@ -149,8 +147,7 @@ void CoFactor(double ** a, int n, double ** b)
 }
 
 
-// Transpose of a square matrix, do it in place
-void Transpose(double ** a, int n) {
+void transpose(double ** a, int n) {
     int i, j;
     double tmp;
 
@@ -174,7 +171,7 @@ void compute_mat_inv(double ** mat, int n, double ** mat_inv) {
     }
     
     // Calculating the determinant of M
-    double det = Determinant(mat, n);
+    double det = determinant(mat, n);
 
 
     // If matrix is singular, exit
@@ -185,11 +182,11 @@ void compute_mat_inv(double ** mat, int n, double ** mat_inv) {
 
 
     // Calculating co-factor M_adj of M
-    CoFactor(mat, n, mat_adj);
+    co_factor(mat, n, mat_adj);
 
 
     // Transposing M_adj
-    Transpose(mat_adj, n);
+    transpose(mat_adj, n);
 
 
     // Calculating inverse of transformation matrix
