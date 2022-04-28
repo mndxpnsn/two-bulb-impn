@@ -550,8 +550,10 @@ void compute_coefficients(c_data_t & comp_data) {
         compute_coeff_matrix(flux_node, comp_data, x_loc);
     }
     
+    flux_node = ng;
+    
     // Bulb 2
-    compute_coeff_matrix(ng, comp_data, comp_data.bulb_data_inter.mol_fracs_bulb2.x);
+    compute_coeff_matrix(flux_node, comp_data, comp_data.bulb_data_inter.mol_fracs_bulb2.x);
 }
 
 void reset_coefficients(c_data_t & comp_data) {
@@ -612,15 +614,18 @@ void bulb2(c_data_t & comp_data_N) {
     
     for(int i = 0; i < n; ++i) {
         double sum_loc = 0.0;
-        for(int j = 0; j < n; ++j) {
-            if(i != j) {
-                double dxj_dz = (comp_data_N.bulb_data.mol_fracs_bulb2.x[j] - comp_data_N.tube_fracs[ng - 1].x[j]) / (0.5 * dz);
-                sum_loc = sum_loc + A_inv[i][j] * dxj_dz;
+        for(int c = 0; c < n; ++c) {
+            if(i != c) {
+                double dxj = comp_data_N.bulb_data.mol_fracs_bulb2.x[c] - comp_data_N.tube_fracs[ng - 1].x[c];
+                double dxj_dz =  dxj / (0.5 * dz);
+                sum_loc = sum_loc +  A * A_inv[i][c] * dxj_dz;
             }
         }
-        sum_loc = - A * sum_loc + A * A_inv[i][i] * comp_data_N.tube_fracs[ng - 1].x[i] / (0.5 * dz) + V / dt * comp_data_N.bulb_data_old.mol_fracs_bulb2.x[i];
-
-        comp_data_N.bulb_data.mol_fracs_bulb2.x[i] = sum_loc / (V / dt + A * A_inv[i][i] / (0.5 * dz));
+        sum_loc = -sum_loc + A * A_inv[i][i] * comp_data_N.tube_fracs[ng - 1].x[i] / (0.5 * dz);
+        sum_loc = sum_loc + V / dt * comp_data_N.bulb_data_old.mol_fracs_bulb2.x[i];
+        double ap = V / dt + A * A_inv[i][i] / (0.5 * dz);
+        
+        comp_data_N.bulb_data.mol_fracs_bulb2.x[i] = sum_loc / ap;
     }
 }
 
@@ -647,11 +652,11 @@ void tube0(c_data_t & comp_data_N) {
             }
         }
 
-        double sum_loc_tot = - sum_loc_w + sum_loc_e + A_inv_w[i][i] * comp_data_N.bulb_data_inter.mol_fracs_bulb1.x[i] / (0.5 * dz) + A_inv_e[i][i] * comp_data_N.tube_fracs[1].x[i] / dz + dz / dt * comp_data_N.tube_fracs_old[0].x[i];
+        double xiW = comp_data_N.bulb_data_inter.mol_fracs_bulb1.x[i];
+        double xiE = comp_data_N.tube_fracs[1].x[i];
+        double sum_loc_tot = -sum_loc_w + sum_loc_e + A_inv_w[i][i] * xiW / (0.5 * dz) + A_inv_e[i][i] * xiE / dz + dz / dt * comp_data_N.tube_fracs_old[0].x[i];
 
-        double ap = dz / dt + A_inv_w[i][i] / (0.5 * dz) + A_inv_e[i][i] / dz;
-
-        comp_data_N.tube_fracs[0].x[i] = sum_loc_tot / ap;
+        comp_data_N.tube_fracs[0].x[i] = sum_loc_tot / (dz / dt + A_inv_w[i][i] / (0.5 * dz) + A_inv_e[i][i] / dz);
     }
 }
 
